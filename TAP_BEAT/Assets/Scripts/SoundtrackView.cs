@@ -7,9 +7,6 @@ namespace TapBeat
 {
     public class SoundtrackView : MonoBehaviour
     {
-
-        [SerializeField] private SoundtrackData _soundtrackData;
-
         [SerializeField] private RectTransform _rightArrow;
         [SerializeField] private RectTransform _leftArrow;
         [SerializeField] private RectTransform _upArrow;
@@ -19,7 +16,11 @@ namespace TapBeat
 
         RectTransform _rectTransform;
 
-        Vector2 _soundTrackViewPosition; 
+        Vector2 _soundTrackViewPosition;
+
+        float _beatSizeView;
+        float _spaceBetweenBeats;
+
 
 		public float SoundtrackViewPosition
         {
@@ -37,8 +38,10 @@ namespace TapBeat
         public void Init(SoundtrackData _soundtrackData)
         {
             _rectTransform = (RectTransform)transform;
-
             _soundTrackViewPosition = _rectTransform.anchoredPosition;
+
+            _beatSizeView = _emptyField.rect.height;
+            _spaceBetweenBeats = GetComponent<VerticalLayoutGroup>().spacing;
 
             foreach (int arrowNumber in _soundtrackData.beatsList)
             {
@@ -69,12 +72,12 @@ namespace TapBeat
 
         private void Start()
         {
-            Init(_soundtrackData);
+            Init(GameController.Instance.SoundtrackData);
         }
 
         void Update()
         {
-            SoundtrackViewPosition -=  Time.deltaTime * 240;
+            SoundtrackViewPosition -=  (_beatSizeView + _spaceBetweenBeats) *Time.deltaTime * GameController.Instance.SecondsPerBeat;
         }
     }
 
