@@ -85,7 +85,7 @@ namespace TapBeat
 
         void Update()
         {
-            SoundtrackViewPosition -=  (_beatSizeView + _spaceBetweenBeats) *Time.deltaTime * GameController.Instance.SecondsPerBeat;
+            SoundtrackViewPosition -=  (_beatSizeView + _spaceBetweenBeats) *Time.deltaTime * GameController.Instance.BeatsPerSecond;
         }
 
         public void ChangeViewBasedOnTapResult(int index, TapResult tapResult)

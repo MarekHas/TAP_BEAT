@@ -17,8 +17,8 @@ namespace TapBeat
         /// </summary>
         public SoundtrackData SoundtrackData { get { return _soundtrackData; } }
 
-        public float SecondsPerBeat { get; private set; }
         public float BeatsPerSecond { get; private set; }
+        public float SecondPerBeat { get; private set; }
 
         private bool _soundTrackCompleted; // has the player completed the track
         private bool _played; // has the player played within the current beat
@@ -50,9 +50,9 @@ namespace TapBeat
         private void Awake()
         {
             _instance = this;
-            SecondsPerBeat = _soundtrackData.bpm / 60f;
-            BeatsPerSecond = 60f / _soundtrackData.bpm;
-            _waitTime = new WaitForSeconds(BeatsPerSecond* 2);
+            BeatsPerSecond = _soundtrackData.bpm / 60f;
+            SecondPerBeat = 60f / _soundtrackData.bpm;
+            _waitTime = new WaitForSeconds(SecondPerBeat* 2);
 
             _soundtrackView = FindObjectOfType<SoundtrackView>();
             if(_soundtrackView == null)
@@ -63,7 +63,7 @@ namespace TapBeat
 
         private void Start()
         {
-            InvokeRepeating("PlayNextBeat",0f,BeatsPerSecond);
+            InvokeRepeating("PlayNextBeat",0f,SecondPerBeat);
         }
         private void Update()
         {
