@@ -23,11 +23,36 @@ namespace TapBeat
         private bool _soundTrackCompleted; // has the player completed the track
         private bool _played; // has the player played within the current beat
         private SoundtrackView _soundtrackView;
+        private WaitForSeconds _waitTime;
+
+        #region Singleton Pattern
+        private static GameController _instance;
+        public static GameController Instance
+        {
+            get
+            {
+                if(_instance == null)
+                {
+                    _instance = (GameController)GameObject.FindObjectOfType(typeof(GameController));
+                }
+                return _instance;
+            }
+     
+        }
+        #endregion
+
         #region MonoBehavior Methods
+        private void OnDestroy()
+        {
+            _instance = null;
+        }
         private void Awake()
         {
+            _instance = this;
             SecondsPerBeat = _soundtrackData.bpm / 60f;
             BeatsPerSecond = 60f / _soundtrackData.bpm;
+            _waitTime = new WaitForSeconds(BeatsPerSecond* 2);
+
         }
 
         private void Start()
@@ -67,7 +92,7 @@ namespace TapBeat
 
                         _soundTrackCompleted = true;
 
-                       //StartCoroutine(WaitAndStop());
+                       StartCoroutine(StopAndWait());
                     }
                 }
             }
@@ -102,6 +127,12 @@ namespace TapBeat
             _played = false;
 
             CurrentBeat++;
+        }
+
+        private IEnumerator StopAndWait()
+        {
+            yield return _waitTime;
+            enabled = false;
         }
         #endregion
     }
