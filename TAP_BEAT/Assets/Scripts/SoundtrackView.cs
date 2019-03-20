@@ -74,7 +74,7 @@ namespace TapBeat
 
         void Update()
         {
-            SoundtrackViewPosition -=  Time.deltaTime * 120;
+            SoundtrackViewPosition -=  Time.deltaTime * 240;
         }
     }
 
