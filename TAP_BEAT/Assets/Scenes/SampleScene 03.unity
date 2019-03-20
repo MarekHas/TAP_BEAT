@@ -238,7 +238,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0b3daddf91fba694f892b810dadb2882, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _soundtrackData: {fileID: 11400000, guid: ea55ff1b227e78e4595a64133e25e289, type: 2}
   _rightArrow: {fileID: 7804085488752078909, guid: 81d9546f89394f740a031b868ec9585a,
     type: 3}
   _leftArrow: {fileID: 6963475156446215959, guid: b415d56af90ccf34bb1d1377354f01ef,
@@ -604,7 +603,7 @@ RectTransform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1409260609}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: -0.00012207031}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 1865795109}
@@ -612,7 +611,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0}
   m_AnchorMax: {x: 0.5, y: 0}
-  m_AnchoredPosition: {x: 0, y: 0}
+  m_AnchoredPosition: {x: 0, y: 200}
   m_SizeDelta: {x: 800, y: 200}
   m_Pivot: {x: 0.5, y: 0}
 --- !u!114 &1409260611

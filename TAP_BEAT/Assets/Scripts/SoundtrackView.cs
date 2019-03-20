@@ -7,6 +7,8 @@ namespace TapBeat
 {
     public class SoundtrackView : MonoBehaviour
     {
+        public enum TapResult { Good, WrongKey, TimeMismatch}
+
         [SerializeField] private RectTransform _rightArrow;
         [SerializeField] private RectTransform _leftArrow;
         [SerializeField] private RectTransform _upArrow;
@@ -15,6 +17,8 @@ namespace TapBeat
         [SerializeField] RectTransform _emptyField;
 
         RectTransform _rectTransform;
+        List<Image> _beatImages;
+
 
         Vector2 _soundTrackViewPosition;
 
@@ -43,6 +47,8 @@ namespace TapBeat
             _beatSizeView = _emptyField.rect.height;
             _spaceBetweenBeats = GetComponent<VerticalLayoutGroup>().spacing;
 
+            _beatImages = new List<Image>();
+
             foreach (int arrowNumber in _soundtrackData.beatsList)
             {
                 GameObject g;
@@ -64,8 +70,10 @@ namespace TapBeat
                         g = _emptyField.gameObject;
                         break;
                 }
-                Transform view = GameObject.Instantiate(g, transform).transform;
-                view.SetAsFirstSibling();
+                Image beatImage = GameObject.Instantiate(g, transform).GetComponent<Image>();
+                beatImage.transform.SetAsFirstSibling();
+
+                _beatImages.Add(beatImage);
 
             }
         }
@@ -78,6 +86,23 @@ namespace TapBeat
         void Update()
         {
             SoundtrackViewPosition -=  (_beatSizeView + _spaceBetweenBeats) *Time.deltaTime * GameController.Instance.SecondsPerBeat;
+        }
+
+        public void ChangeViewBasedOnTapResult(int index, TapResult tapResult)
+        {
+            switch (tapResult)
+            {
+                case TapResult.TimeMismatch:
+                    _beatImages[index].color = Color.black;
+                    break;
+                case TapResult.Good:
+                    _beatImages[index].color = Color.green;
+                    break;
+                case TapResult.WrongKey:
+                    _beatImages[index].color = Color.red;
+                    break;
+
+            }
         }
     }
 

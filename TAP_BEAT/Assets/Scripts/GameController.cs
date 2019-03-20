@@ -22,6 +22,7 @@ namespace TapBeat
 
         private bool _soundTrackCompleted; // has the player completed the track
         private bool _played; // has the player played within the current beat
+
         private SoundtrackView _soundtrackView;
         private WaitForSeconds _waitTime;
 
@@ -53,6 +54,11 @@ namespace TapBeat
             BeatsPerSecond = 60f / _soundtrackData.bpm;
             _waitTime = new WaitForSeconds(BeatsPerSecond* 2);
 
+            _soundtrackView = FindObjectOfType<SoundtrackView>();
+            if(_soundtrackView == null)
+            {
+                Debug.Log("no soundtrackView in scene");
+            }
         }
 
         private void Start()
@@ -101,18 +107,21 @@ namespace TapBeat
         public void TapBeat(int _input)
         {
             Debug.Log("tap " + _input);
-            
+            _played = true;
             if(_soundtrackData.beatsList[CurrentBeat]== -1)
             {
                 Debug.Log(string.Format("{0} play to early",_input));
+ 
             }
             else if (_soundtrackData.beatsList[CurrentBeat] == _input)
             {
                 Debug.Log(string.Format("{0} GOOD !!!", _input));
+                _soundtrackView.ChangeViewBasedOnTapResult(CurrentBeat, SoundtrackView.TapResult.Good);
             }
             else//played wrong keycode
             {
                 Debug.Log(string.Format("{0} played wrong key , {1} expected",_input, _soundtrackData.beatsList[CurrentBeat]));
+                _soundtrackView.ChangeViewBasedOnTapResult(CurrentBeat, SoundtrackView.TapResult.WrongKey);
             }
             
         }
@@ -123,6 +132,7 @@ namespace TapBeat
             if (!_played && _soundtrackData.beatsList[CurrentBeat] != -1)
             {
                 Debug.Log(string.Format("{0} missed", _soundtrackData.beatsList[CurrentBeat]));
+                _soundtrackView.ChangeViewBasedOnTapResult(CurrentBeat, SoundtrackView.TapResult.TimeMismatch);
             }
             _played = false;
 
