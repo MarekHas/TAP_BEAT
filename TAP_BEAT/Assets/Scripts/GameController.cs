@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using System.Linq;
 namespace TapBeat
 {
     public class GameController : MonoBehaviour
@@ -25,6 +26,10 @@ namespace TapBeat
 
         private SoundtrackView _soundtrackView;
         private WaitForSeconds _waitTime;
+
+        #region BeatEvents Interfaces
+        List<ITapEventHandler> _tickHandlers;
+        #endregion
 
         #region Singleton Pattern
         private static GameController _instance;
@@ -59,6 +64,14 @@ namespace TapBeat
             {
                 Debug.Log("no soundtrackView in scene");
             }
+
+            List<Transform> rootTransforms = (from t in FindObjectsOfType<Transform>()
+                                              where t.parent == null
+                                              select t).ToList();
+
+            _tickHandlers = new List<ITapEventHandler>();
+            foreach (Transform t in rootTransforms)
+                _tickHandlers.AddRange(t.GetComponentsInChildren<ITapEventHandler>());
         }
 
         private void Start()
@@ -106,6 +119,9 @@ namespace TapBeat
 
         public void TapBeat(int _input)
         {
+
+           
+
             Debug.Log("tap " + _input);
             _played = true;
             if(_soundtrackData.beatsList[CurrentBeat]== -1)
@@ -128,6 +144,11 @@ namespace TapBeat
 
         public void PlayNextBeat()
         {
+            //			Debug.Log ("Tick");
+            if (_tickHandlers.Count > 0)
+                for (int i = 0; i < _tickHandlers.Count; i++)
+                    _tickHandlers[i].Tapped(CurrentBeat);
+
             //-1 is empty beat
             if (!_played && _soundtrackData.beatsList[CurrentBeat] != -1)
             {
